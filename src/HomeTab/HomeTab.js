@@ -56,7 +56,7 @@ const Button = styled.button`
   line-height: 18px;
 `
 
-function HomeTab({recentlyUploadedFiles, handleFileDrop}) {
+function HomeTab({recentlyUploadedFiles, handleFileDrop, removeRecentFile}) {
   return (
     <ContentContainer style={{ flexDirection:"column", gap:"24px" }}>
       <HomeDataCloudContainer>
@@ -75,7 +75,7 @@ function HomeTab({recentlyUploadedFiles, handleFileDrop}) {
       </HomeDataCloudContainer>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap:"24px" }}>
         <ConnectData/>
-        <UploadFilesContent onDrop={handleFileDrop} recentlyUploadedFiles={recentlyUploadedFiles}/>
+        <UploadFilesContent onDrop={handleFileDrop} recentlyUploadedFiles={recentlyUploadedFiles} removeRecentFile={removeRecentFile}/>
       </div>
     </ContentContainer>
   );

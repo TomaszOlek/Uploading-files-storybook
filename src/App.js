@@ -118,6 +118,16 @@ function App() {
     }
   },[downloadData])
 
+  const removeRecentFile = (item) => {
+    console.log(item)
+    const newArray = recentlyUploadedFiles.filter( element => element.name !== item.name )
+    if (newArray.length>1){
+      setRecentlyUploadedFiles([])
+    }else{
+      setRecentlyUploadedFiles(newArray)
+    }
+  }
+
   const handleFileDrop = (item) => {
     if (item) {
       const randomizedName = `${item.name + v4()}`
@@ -139,6 +149,7 @@ function App() {
         }
 
         if (progress === 100){
+          //Re download data
           console.log("reRender")
         }
 
@@ -153,13 +164,13 @@ function App() {
         <Content>
           <Profile/>
           {activeTab === "Home" &&(
-            <HomeTab recentlyUploadedFiles={recentlyUploadedFiles} handleFileDrop={handleFileDrop}/>
+            <HomeTab recentlyUploadedFiles={recentlyUploadedFiles} handleFileDrop={handleFileDrop} removeRecentFile={removeRecentFile}/>
           )}
           {activeTab === "DataSources" &&(
             <ContentContainer>Empty</ContentContainer>
           )}
           {activeTab === "AllFiles" &&(
-            <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop}/>
+            <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile}/>
           )}
         </Content>
       </div>

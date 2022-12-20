@@ -46,7 +46,7 @@ const Upload = styled.div`
 `
 
 //ToAdd - Error Notification
-function AllFilesTab({ recentlyUploadedFiles, onDrop }) {
+function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile }) {
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
@@ -90,7 +90,7 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop }) {
           </Text>
         </Upload>
         {recentlyUploadedFiles.length>0 && (
-          <DroppedFiles recentlyUploadedFiles={recentlyUploadedFiles}/>
+          <DroppedFiles recentlyUploadedFiles={recentlyUploadedFiles} removeRecentFile={removeRecentFile}/>
         )}
         <Text weight="600" size="24px" height="33px">All files</Text>
         <Table/> 

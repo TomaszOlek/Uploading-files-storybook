@@ -10,6 +10,7 @@ import { Text } from '../functions'
 import DropDownMenu from './DropDownMenu'
 import NoFilesAvailable from './NoFilesAvailable'
 import SortedFiles from './SortedFiles'
+import { width } from '@mui/system';
 
 const Search = styled.div`
   width: 100%;
@@ -97,7 +98,9 @@ function Table() {
     <> 
       <TableSerchContainer>
         <Search>
-          <Icon icon="fe:search" style={{ marginLeft: "16px", position: "absolute", color: "#63676E" }}/>
+          <div style={{position:"relative", height:"0", width:"0"}}>
+            <Icon icon="fe:search" style={{ left: "16px", top: "-7px", position: "absolute", color: "#63676E" }}/>
+          </div>
           <SearchBar 
             type="text"
             placeholder="Search">

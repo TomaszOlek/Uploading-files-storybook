@@ -6,7 +6,6 @@ import { NativeTypes } from 'react-dnd-html5-backend';
 import { Icon } from '@iconify/react';
 
 import { Text } from '../functions'
-import { convertToMBorKB } from '../functions'
 import DroppedFiles from './DroppedFiles'
 
 const UploadFilesContainer = styled.div`
@@ -72,7 +71,7 @@ const ViewAllFilesBox = styled.div`
   bottom: 0px;
 `
 
-function UploadFilesContent({onDrop,recentlyUploadedFiles}) {
+function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile}) {
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
@@ -132,12 +131,12 @@ function UploadFilesContent({onDrop,recentlyUploadedFiles}) {
           <RecentlyUploadedFilesContainer>
             <div>
               {recentlyUploadedFiles.map((element,index)=>(
-                <DroppedFiles element={element} key={index}/>
+                <DroppedFiles element={element} removeRecentFile={removeRecentFile} key={index}/>
               ))}
             </div>
 
             {recentlyUploadedFiles.length<3 && (
-              <ViewAllFilesBox style={{width:"160",marginBottom:"20px"}}>
+              <ViewAllFilesBox style={{width:"100%",marginBottom:"20px"}}>
                 <Text weight="600" size="10px" align="center" height="14px" margin="0">Go to All files to view the</Text>
                 <Text weight="600" size="10px" align="center" height="14px" margin="0">uploaded files,</Text>
               </ViewAllFilesBox>

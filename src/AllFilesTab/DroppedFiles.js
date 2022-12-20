@@ -45,7 +45,7 @@ const FileInforamtions = styled.div`
   gap: 20px;
 `
 
-function DroppedFiles({ recentlyUploadedFiles }) {
+function DroppedFiles({ recentlyUploadedFiles, removeRecentFile }) {
   return (
     <FilesContainer>
       {
@@ -100,7 +100,7 @@ function DroppedFiles({ recentlyUploadedFiles }) {
               </FileInforamtions>
               <LinearProgress variant="determinate" value={element.uploadProgress} />
             </div>
-            <Icon icon="fe:close" style={{ fontSize:"24px", color:"#77797E"}} ></Icon>
+            <Icon onClick={ () => removeRecentFile(element) } icon="fe:close" style={{ fontSize:"24px", color:"#77797E"}} ></Icon>
           </File>
         ))
       }

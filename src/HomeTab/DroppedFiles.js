@@ -19,7 +19,7 @@ const DroppedFileContainer = styled.div`
   border-bottom: 1px solid #F0F0F0;
 `
 
-function DroppedFiles({ element }) {
+function DroppedFiles({ element, removeRecentFile }) {
     return(
         <DroppedFileContainer>
         <img src={excel_icon} style={{width:"24px", height:"24px", alignSelf: "center", marginRight:"10px"}}/>
@@ -45,7 +45,7 @@ function DroppedFiles({ element }) {
             <Text weight="600" size="10px" height="14px" color='#63676E' margin="0">
               {convertToMBorKB(element.data.totalBytes)}
             </Text>
-            <Icon icon="fe:close" style={{ fontSize:"12px", color:"#63676E", alignSelf:"center", marginLeft: "auto"}}/>
+            <Icon icon="fe:close" onClick={ () => removeRecentFile(element) } style={{ fontSize:"12px", color:"#63676E", alignSelf:"center", marginLeft: "auto"}}/>
           </div>
 
           <LinearProgress variant="determinate" value={element.uploadProgress} />
