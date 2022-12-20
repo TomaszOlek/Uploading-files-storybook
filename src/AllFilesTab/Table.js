@@ -9,7 +9,7 @@ import { storage } from '../firebase'
 import { Text } from '../functions'
 import DropDownMenu from './DropDownMenu'
 import NoFilesAvailable from './NoFilesAvailable'
-import FileItem from './FileItem'
+import SortedFiles from './SortedFiles'
 
 const Search = styled.div`
   width: 100%;
@@ -63,14 +63,6 @@ const FileContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-`
-const FilesTableContainer = styled.div`
-  width: 1024px;
-  margin-top: 20px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 `
 const TableSerchContainer = styled.div`
   width:100%;
@@ -142,17 +134,7 @@ function Table() {
             filesList>0 ? 
             (<NoFilesAvailable/>) 
             : 
-            (<FilesTableContainer>
-              {
-                filesList.map((fileInfo, index)=>(
-                  <FileItem key={index}
-                    timeCreated={fileInfo.timeCreated.split('T')[0]} 
-                    fileName={fileInfo.name.split('.csv')[0]}
-                    fileSize={fileInfo.size}
-                  />
-                ))
-              }
-            </FilesTableContainer>)
+            (<SortedFiles filesList={filesList} sortBy={sortBy}/>)
           }
         </FileContainer>
 

@@ -138,6 +138,10 @@ function App() {
           })
         }
 
+        if (progress === 100){
+          console.log("reRender")
+        }
+
       });
     }
   };

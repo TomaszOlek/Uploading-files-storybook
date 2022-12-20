@@ -50,7 +50,7 @@ function DroppedFiles({ recentlyUploadedFiles }) {
     <FilesContainer>
       {
         recentlyUploadedFiles.map((element,index)=>(
-          <File>
+          <File key={index}>
             <img src={excel_icon} style={{ width: '24px', height: '24px' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <FileInforamtions>
