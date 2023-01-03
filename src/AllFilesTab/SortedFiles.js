@@ -23,9 +23,13 @@ function Sort(sortBy,filesList){
     }
 }
 
-function SortedFiles({filesList,sortBy}) {
+function SortedFiles({ filesList, sortBy, reRender }) {
 
-    const sorteList = Sort(sortBy,filesList)
+    const [sorteList, setSorteList] = useState([])
+
+    useEffect(() => {
+        setSorteList(Sort(sortBy,filesList))
+    }, [filesList])
 
     return (
         <FilesTableContainer>
@@ -34,6 +38,8 @@ function SortedFiles({filesList,sortBy}) {
                     timeCreated={fileInfo.timeCreated.split('T')[0]} 
                     fileName={fileInfo.name.split('.csv')[0]}
                     fileSize={fileInfo.size}
+                    fileInfo={fileInfo}
+                    reRender={reRender}
                 />
             ))}
         </FilesTableContainer>

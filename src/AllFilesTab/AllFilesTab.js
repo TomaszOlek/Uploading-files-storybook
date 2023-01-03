@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 
@@ -47,6 +47,11 @@ const Upload = styled.div`
 
 //ToAdd - Error Notification
 function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile }) {
+  const [render, setRender] = useState(true);
+
+  const reRender = () => {
+    setRender(prev => !prev)
+  }
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
@@ -90,10 +95,10 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile }) {
           </Text>
         </Upload>
         {recentlyUploadedFiles.length>0 && (
-          <DroppedFiles recentlyUploadedFiles={recentlyUploadedFiles} removeRecentFile={removeRecentFile}/>
+          <DroppedFiles recentlyUploadedFiles={recentlyUploadedFiles} removeRecentFile={removeRecentFile} reRender={reRender}/>
         )}
         <Text weight="600" size="24px" height="33px">All files</Text>
-        <Table/> 
+        <Table render={render} reRender={reRender}/> 
       </AllFilesScroll>
     </ContentContainer>
   );

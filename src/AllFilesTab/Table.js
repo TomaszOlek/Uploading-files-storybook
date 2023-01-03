@@ -74,7 +74,7 @@ const TableSerchContainer = styled.div`
   justify-content: space-between;
 `
 
-function Table() {
+function Table({ render , reRender }) {
   const [sortBy, setSortBy] = useState("recent");
   const [filesList, setFilesList] = useState([]);
 
@@ -85,14 +85,16 @@ function Table() {
   const filesListRef = ref(storage, "files/")
 
   useEffect(()=>{
+    setFilesList([])
     listAll(filesListRef).then((res)=>{
       res.items.forEach((item)=>{
         getMetadata(item).then((metadata) => {
           setFilesList((prev) => [...prev, metadata])
+          console.log("rerender")
         })
       })
     })
-  }, [])
+  }, [render])
 
   return (
     <> 
@@ -137,7 +139,7 @@ function Table() {
             filesList>0 ? 
             (<NoFilesAvailable/>) 
             : 
-            (<SortedFiles filesList={filesList} sortBy={sortBy}/>)
+            (<SortedFiles filesList={filesList} sortBy={sortBy} reRender={reRender}/>)
           }
         </FileContainer>
 

@@ -4,6 +4,9 @@ import { Icon } from '@iconify/react';
 
 import { Text } from '../functions'
 import { convertToMBorKB } from '../functions'
+import { storage } from '../firebase'
+import { ref, deleteObject, getDownloadURL  } from 'firebase/storage'
+
 
 import excel_icon from '../assets/excel.png';
 
@@ -36,7 +39,39 @@ const FilesItemIcons = styled.div`
   };
 `
 
-function FileItem({ timeCreated, fileName, fileSize }) {
+function FileItem({ timeCreated, fileName, fileSize, fileInfo, reRender }) {
+
+  console.log(fileInfo)
+
+  const onRemoveFile = (props) => {
+    const desertRef = ref(storage, props.fullPath);
+
+    deleteObject(desertRef).then( () => {
+      console.log("file "+ props.name +" got removed")
+      reRender()
+    }).catch( (error) => {
+      console.log("remove file error ", error)
+    });
+
+  }
+
+  const onDownload = (props) =>  {
+    getDownloadURL(ref(storage, props.fullPath))
+    .then((url) => {
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event) => {
+        const blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+      window.open(url, '_blank', 'noreferrer').focus();
+
+    })
+    .catch((error) => {
+      console.log("download file error ", error)
+    });
+  }
 
   return(
     <FilesItemContainer>
@@ -71,10 +106,10 @@ function FileItem({ timeCreated, fileName, fileSize }) {
         {timeCreated}
       </Text>
       <FilesItemIcons>
-        <Icon icon="fe:import" style={{width: "16px", height: "16px"}} />
+        <Icon icon="fe:import" onClick={() => onDownload(fileInfo)} style={{width: "16px", height: "16px"}} />
       </FilesItemIcons>
       <FilesItemIcons>
-        <Icon icon="fe:trash" style={{width: "16px", height: "16px"}}/>
+        <Icon icon="fe:trash" onClick={() => onRemoveFile(fileInfo)} style={{width: "16px", height: "16px"}}/>
       </FilesItemIcons>
     </FilesItemContainer>
   )
