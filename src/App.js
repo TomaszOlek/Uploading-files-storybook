@@ -11,6 +11,7 @@ import { storage } from './firebase'
 import NavBar from "./NavBar"
 import HomeTab from "./HomeTab/HomeTab"
 import AllFilesTab from "./AllFilesTab/AllFilesTab"
+import WarningNotification from "./WarningNotification"
 
 
 const Content = styled.div`
@@ -80,6 +81,13 @@ function App() {
   const [activeTab,setActiveTab] = useState("Home")
   const [recentlyUploadedFiles, setRecentlyUploadedFiles] = useState([]);
   const [downloadData, setDownloadData] = useState();
+  const [notificationType, setNotificationType] = useState(3);
+  
+  // Notification Types:
+  // 0 - no Notification, 
+  // 1 - Warning Notification, 
+  // 2 - Error Notification | only .scv,   
+  // 3 - Error Notification | size limit, 
 
   const changeTab = selectedTab =>(
     setActiveTab(selectedTab)
@@ -129,7 +137,9 @@ function App() {
   }
 
   const handleFileDrop = (item) => {
-    if (item) {
+    if (item && item.size > 524288000) {
+      // show notification " file size to big "
+    }else {
       const randomizedName = `${item.name + v4()}`
 
       const fileRef = ref(storage, `files/${randomizedName}`)
@@ -148,10 +158,9 @@ function App() {
           })
         }
 
-        if (progress === 100){
-          //Re download data
-          console.log("reRender")
-        }
+        // if (progress === 100){
+        //   console.log("reRender")
+        // }
 
       });
     }
@@ -173,6 +182,9 @@ function App() {
             <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile}/>
           )}
         </Content>
+        {notificationType != 0 && (
+          <WarningNotification notificationType={notificationType} setNotificationType={setNotificationType}/>
+        )}
       </div>
     </DndProvider>
   );
