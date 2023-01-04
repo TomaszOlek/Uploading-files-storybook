@@ -11,7 +11,7 @@ import { storage } from './firebase'
 import NavBar from "./NavBar"
 import HomeTab from "./HomeTab/HomeTab"
 import AllFilesTab from "./AllFilesTab/AllFilesTab"
-import WarningNotification from "./WarningNotification"
+import Notifications from "./Notifications"
 
 
 const Content = styled.div`
@@ -81,7 +81,9 @@ function App() {
   const [activeTab,setActiveTab] = useState("Home")
   const [recentlyUploadedFiles, setRecentlyUploadedFiles] = useState([]);
   const [downloadData, setDownloadData] = useState();
-  const [notificationType, setNotificationType] = useState(3);
+
+  const [notificationType, setNotificationType] = useState(0);
+  const [selectedFile, setSelectedFile] = useState();
   
   // Notification Types:
   // 0 - no Notification, 
@@ -92,6 +94,10 @@ function App() {
   const changeTab = selectedTab =>(
     setActiveTab(selectedTab)
   )
+
+  const changeNotifiactionType = type =>{
+    setNotificationType(type)
+  }
 
   useEffect(()=>{
     if(downloadData){
@@ -127,42 +133,67 @@ function App() {
   },[downloadData])
 
   const removeRecentFile = (item) => {
-    console.log(item)
-    const newArray = recentlyUploadedFiles.filter( element => element.name !== item.name )
-    if (newArray.length>1){
-      setRecentlyUploadedFiles([])
+    if (item.progress === 100) {
+      // console.log("removed from RecentFiles:", item)
+      const newArray = recentlyUploadedFiles.filter( element => element.name !== item.name )
+      if (newArray.length>1){
+        setRecentlyUploadedFiles([])
+      }else{
+        setRecentlyUploadedFiles(newArray)
+      }
     }else{
-      setRecentlyUploadedFiles(newArray)
+      const task = this.state.tasks.find((t) => t.item === item);
+
+      // Cancel the file upload
+      task.task.pause();
     }
   }
 
   const handleFileDrop = (item) => {
-    if (item && item.size > 524288000) {
-      // show notification " file size to big "
-    }else {
-      const randomizedName = `${item.name + v4()}`
+    if(item){
 
+      const randomizedName = `${item.name + v4()}`
       const fileRef = ref(storage, `files/${randomizedName}`)
       const uploading = uploadBytesResumable(fileRef, item)
+
+      // const handlePause = () => {
+      //   this.state.task.pause();
+      // }
 
       uploading.on('state_changed', 
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-        if (snapshot.state) {
-          setDownloadData({
-            data: snapshot,
-            uploadSpeed: snapshot.totalBytes,
-            uploadProgress: progress,
-            lastBytesTransferred : snapshot.bytesTransferred,
-          })
+        switch (snapshot.state) {
+          case 'paused':
+            setDownloadData({
+              data: snapshot,
+              uploadSpeed: snapshot.totalBytes,
+              uploadProgress: progress,
+              lastBytesTransferred : snapshot.bytesTransferred,
+              status: "paused",
+              pauseTask: function(){
+                console.log(this)
+              },
+            })
+            break;
+          case 'running':
+            setDownloadData({
+              data: snapshot,
+              uploadSpeed: snapshot.totalBytes,
+              uploadProgress: progress,
+              lastBytesTransferred : snapshot.bytesTransferred,
+              status: "running",
+              pauseTask: function(){
+                console.log(this)
+              },
+            })
+            break;
         }
-
-        // if (progress === 100){
-        //   console.log("reRender")
-        // }
-
+      }, 
+      (error) => {
+        console.log("handleFileDrop ERROR: ", error)
       });
+    
     }
   };
 
@@ -173,7 +204,7 @@ function App() {
         <Content>
           <Profile/>
           {activeTab === "Home" &&(
-            <HomeTab recentlyUploadedFiles={recentlyUploadedFiles} handleFileDrop={handleFileDrop} removeRecentFile={removeRecentFile}/>
+            <HomeTab recentlyUploadedFiles={recentlyUploadedFiles} handleFileDrop={handleFileDrop} removeRecentFile={removeRecentFile} changeNotifiactionType={changeNotifiactionType}/>
           )}
           {activeTab === "DataSources" &&(
             <ContentContainer>Empty</ContentContainer>
@@ -183,7 +214,7 @@ function App() {
           )}
         </Content>
         {notificationType != 0 && (
-          <WarningNotification notificationType={notificationType} setNotificationType={setNotificationType}/>
+          <Notifications notificationType={notificationType} setNotificationType={setNotificationType} selectedFile={selectedFile}/>
         )}
       </div>
     </DndProvider>

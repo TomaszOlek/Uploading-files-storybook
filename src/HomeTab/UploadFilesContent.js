@@ -71,7 +71,7 @@ const ViewAllFilesBox = styled.div`
   bottom: 0px;
 `
 
-function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile}) {
+function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, changeNotifiactionType}) {
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
@@ -80,18 +80,18 @@ function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile}) {
 
       drop: (item) => {
         item.files.forEach((element) => {
-          if (element.type === "text/csv"){
+          if (element.type != "text/csv"){
+            changeNotifiactionType(2)
+          } else if(element.size > 524288000){
+            changeNotifiactionType(3)
+          } else{
             if (onDrop) {
               onDrop(element);
             }
-          }else{
-            // Show notification
-            console.log("Nope")
           }
         });
       },
       collect: monitor => {
-        // const item = monitor.getItem();
         return {
           isOver: monitor.isOver(),
           canDrop: monitor.canDrop(),

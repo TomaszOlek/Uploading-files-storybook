@@ -63,7 +63,7 @@ const Button = styled.button`
   line-height: 18px;
 `
 
-function WarningNotification({notificationType, setNotificationType}) {
+function Notifications({notificationType, setNotificationType, selectedFile}) {
 
   const changeNotificationType = (type) => {
     setNotificationType(type)
@@ -151,4 +151,4 @@ function WarningNotification({notificationType, setNotificationType}) {
   )
 }
 
-export default WarningNotification;
+export default Notifications;
