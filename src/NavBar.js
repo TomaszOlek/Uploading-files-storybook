@@ -1,6 +1,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { Icon } from '@iconify/react';
 
 const NavigationBar = styled.div`
     width: 300px;
@@ -37,24 +38,25 @@ function NavBar({ changeTab, activeTab }) {
       {
         tabTitle: "Home",
         selectionTabName: "Home",
-        Icon: "",
+        Icon: "bx:home-alt",
       },
       {
         tabTitle: "Data Sources",
         selectionTabName: "DataSources",
-        Icon: "",
+        Icon: "mingcute:lightning-line",
       },
       {
         tabTitle: "All Files",
         selectionTabName: "AllFiles",
-        Icon: "",
+        Icon: "mdi:file-document-outline",
       },
     ]
+    //, alignSelf:"center", marginLeft: "auto"
   
     return (
       <NavigationBar>
         <NavBarTitle>
-          <p>Ico</p>
+        <Icon icon="ic:outline-cloud-queue" style={{ fontSize:"24px", color:"#111111"}}/>
           Data Cloud
         </NavBarTitle>
         {navigationTabs.map((tab)=>(
@@ -71,7 +73,7 @@ function NavBar({ changeTab, activeTab }) {
               :{}
             }
           >
-            <p>Ico</p>
+            <Icon icon={tab.Icon} style={{ fontSize:"24px", color:"#111111"}}/>
             <p>{tab.tabTitle}</p>
           </NavItem>
         ))}

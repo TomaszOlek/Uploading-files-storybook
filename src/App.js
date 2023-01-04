@@ -12,6 +12,7 @@ import NavBar from "./NavBar"
 import HomeTab from "./HomeTab/HomeTab"
 import AllFilesTab from "./AllFilesTab/AllFilesTab"
 import Notifications from "./Notifications"
+import { positions } from '@mui/system';
 
 
 const Content = styled.div`
@@ -63,6 +64,25 @@ const ProfileIcon = styled.div`
   background-color: #000000;
   border-radius: 50%;
 `
+const NotificationIcon = styled.div`
+  width: 18px;
+  height: 18px;
+
+  position: relative;
+  left: 12px;
+  bottom: 12px;
+  text-align: center;
+
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 9px;
+  line-height: 18px;
+
+  background-color: #F40431;
+  color: #F5F8F7;
+  border-radius: 50%;
+`
 
 // ToAdd - ProfileIcon, NotifcationIcon 
 function Profile() {
@@ -70,7 +90,9 @@ function Profile() {
     <ProfileBar>
       <ProfileBackground>
         <ProfileIcon></ProfileIcon>
-        <></>  
+        <div style={{position:"absolute"}}>
+          <NotificationIcon>5</NotificationIcon>  
+        </div>
       </ProfileBackground>
     </ProfileBar>
   );
