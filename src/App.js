@@ -13,6 +13,7 @@ import HomeTab from "./HomeTab/HomeTab"
 import AllFilesTab from "./AllFilesTab/AllFilesTab"
 import Notifications from "./Notifications"
 import { positions } from '@mui/system';
+import { element } from 'prop-types';
 
 
 const Content = styled.div`
@@ -104,8 +105,7 @@ function App() {
   const [recentlyUploadedFiles, setRecentlyUploadedFiles] = useState([]);
   const [downloadData, setDownloadData] = useState();
 
-  const [notificationType, setNotificationType] = useState(0);
-  const [selectedFile, setSelectedFile] = useState();
+  const [notificationType, setNotificationType] = useState({type: 0, element : {}});
   
   // Notification Types:
   // 0 - no Notification, 
@@ -157,17 +157,15 @@ function App() {
   const removeRecentFile = (item) => {
     if (item.progress === 100) {
       // console.log("removed from RecentFiles:", item)
-      const newArray = recentlyUploadedFiles.filter( element => element.name !== item.name )
+      const newArray = recentlyUploadedFiles.filter( element => element.name !== item.name)
       if (newArray.length>1){
         setRecentlyUploadedFiles([])
       }else{
         setRecentlyUploadedFiles(newArray)
       }
     }else{
-      const task = this.state.tasks.find((t) => t.item === item);
-
-      // Cancel the file upload
-      task.task.pause();
+      item.fileRef.pause()
+      setNotificationType({type: 1, element: item.fileRef})  
     }
   }
 
@@ -178,12 +176,9 @@ function App() {
       const fileRef = ref(storage, `files/${randomizedName}`)
       const uploading = uploadBytesResumable(fileRef, item)
 
-      // const handlePause = () => {
-      //   this.state.task.pause();
-      // }
-
       uploading.on('state_changed', 
       (snapshot) => {
+        // console.log(snapshot)
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         switch (snapshot.state) {
           case 'paused':
@@ -193,9 +188,7 @@ function App() {
               uploadProgress: progress,
               lastBytesTransferred : snapshot.bytesTransferred,
               status: "paused",
-              pauseTask: function(){
-                console.log(this)
-              },
+              fileRef: uploading,
             })
             break;
           case 'running':
@@ -205,9 +198,7 @@ function App() {
               uploadProgress: progress,
               lastBytesTransferred : snapshot.bytesTransferred,
               status: "running",
-              pauseTask: function(){
-                console.log(this)
-              },
+              fileRef: uploading,
             })
             break;
         }
@@ -235,8 +226,8 @@ function App() {
             <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile}/>
           )}
         </Content>
-        {notificationType != 0 && (
-          <Notifications notificationType={notificationType} setNotificationType={setNotificationType} selectedFile={selectedFile}/>
+        {notificationType.type != 0 && (
+          <Notifications notificationType={notificationType} setNotificationType={setNotificationType}/>
         )}
       </div>
     </DndProvider>

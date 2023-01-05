@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 
 import { Text } from './functions'
-import { amber } from '@mui/material/colors';
 
 const Container = styled.div`
   width: 100vw;
@@ -63,19 +62,33 @@ const Button = styled.button`
   line-height: 18px;
 `
 
-function Notifications({notificationType, setNotificationType, selectedFile}) {
+function Notifications({notificationType, setNotificationType}) {
 
   const changeNotificationType = (type) => {
-    setNotificationType(type)
+    setNotificationType({type: type, element : {}})
   }
 
   // 1 - Warning Notification, 
   // 2 - Error Notification | only .scv,   
   // 3 - Error Notification | size limit, 
+  console.log(notificationType)
+  console.log(notificationType.type  === 1)
+
+
+  const resumeUpload = (item) => {
+    item.resume()
+    changeNotificationType(0)
+  }
+
+  const removeFile = (item) => {
+    item.cancel()
+    // changeNotificationType(0)
+  }
+
 
   return(
     <Container>
-      {notificationType  === 1 &&(
+      {notificationType.type  === 1 &&(
         <ContentBox>
           <div style={{ position: 'absolute' }}>
             <Icon 
@@ -96,12 +109,12 @@ function Notifications({notificationType, setNotificationType, selectedFile}) {
           <Text weight="600" size="12px" color="#7C8088" height="18px" margin="0" align="center">Your upload is not complete.</Text>
           <Text weight="600" size="12px" color="#7C8088" height="18px" margin="0" align="center">Closing now will stop the upload.</Text>
           <div style={{ display:"flex",  flexDirection:"row", justifyContent: 'space-around', marginTop: "18px"}}>
-            <Button onClick={ () => changeNotificationType(0) }>Cancel</Button>
-            <FilldButton>Continue</FilldButton>
+            <Button onClick={ () => resumeUpload(notificationType.element)}>Cancel</Button>
+            <FilldButton onClick={()=> removeFile(notificationType.element)} >Continue</FilldButton>
           </div>
         </ContentBox>
       )}
-      {notificationType  === 2 &&(
+      {notificationType.type  === 2 &&(
         <ContentBox height="104px">
           <div style={{ position: 'absolute' }}>
             <Icon 
@@ -124,7 +137,7 @@ function Notifications({notificationType, setNotificationType, selectedFile}) {
         
         </ContentBox>
       )}
-      {notificationType  === 3 &&(
+      {notificationType.type  === 3 &&(
         <ContentBox height="104px">
           <div style={{ position: 'absolute' }}>
             <Icon 
