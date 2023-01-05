@@ -44,13 +44,34 @@ const Upload = styled.div`
   background-color: #F0FDFC;
   border: 1px dashed #00847A;
 `
+const UploadLabel = styled.label`
+  width: 1020px;
+  height: 140px;
+
+  background-color: none;
+  position: absolute;
+`
 
 //ToAdd - Error Notification
-function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile }) {
+function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNotifiactionType }) {
   const [render, setRender] = useState(true);
 
   const reRender = () => {
     setRender(prev => !prev)
+  }
+
+  const UploadSelectedFile = (file) =>{
+    if (!file) return;
+
+    if (file.type != "text/csv"){
+      changeNotifiactionType( (prev) => ({...prev, type: 2 }))
+    } else if(file.size > 524288000){
+      changeNotifiactionType((prev) => ({...prev, type: 3 }))
+    } else{
+      if (onDrop) {
+        onDrop(file);
+      }
+    }
   }
 
   const [{ canDrop, isOver }, drop] = useDrop(
@@ -60,18 +81,18 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile }) {
 
       drop: (item) => {
         item.files.forEach((element) => {
-          if (element.type === "text/csv"){
+          if (element.type != "text/csv"){
+            changeNotifiactionType((prev) => ({...prev, type: 2 }))
+          } else if(element.size > 524288000){
+            changeNotifiactionType((prev) => ({...prev, type: 3 }))
+          } else{
             if (onDrop) {
               onDrop(element);
             }
-          }else{
-            // Error Notification
-            console.log("Nope")
           }
         });
       },
       collect: monitor => {
-        const item = monitor.getItem();
         return {
           isOver: monitor.isOver(),
           canDrop: monitor.canDrop(),
@@ -86,9 +107,18 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile }) {
       <AllFilesScroll>
         <Text weight="600" size="24px" height="33px">Upload files</Text>
         <Upload ref={drop}>
+          <UploadLabel areFilesUploaded={recentlyUploadedFiles.length>0}>
+            <input
+              style={{display:"none"}}
+              type="file"
+              onChange={(event) => {
+                UploadSelectedFile(event.target.files[0]);
+              }}
+            />
+          </UploadLabel>
           <Icon icon="carbon:cloud-upload" style={{ fontSize: "32px", color: "#00847A", padding: "30px 0 24px 0" }}/>
           <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
-            Drag and drop your files here or click to browse
+            Drag and drop your files here or <span style={{color:"#00847A"}}>click to browse</span>
           </Text>
           <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
           .csv files only. Maximum file size 500 mb

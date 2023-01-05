@@ -155,8 +155,8 @@ function App() {
   },[downloadData])
 
   const removeRecentFile = (item) => {
-    if (item.progress === 100) {
-      // console.log("removed from RecentFiles:", item)
+    console.log(item)
+    if (item.uploadProgress === 100) {
       const newArray = recentlyUploadedFiles.filter( element => element.name !== item.name)
       if (newArray.length>1){
         setRecentlyUploadedFiles([])
@@ -223,7 +223,7 @@ function App() {
             <ContentContainer>Empty</ContentContainer>
           )}
           {activeTab === "AllFiles" &&(
-            <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile}/>
+            <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile} changeNotifiactionType={changeNotifiactionType}/>
           )}
         </Content>
         {notificationType.type != 0 && (

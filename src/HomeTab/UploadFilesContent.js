@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDrop } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
@@ -70,8 +70,32 @@ const ViewAllFilesBox = styled.div`
   right: 0px;
   bottom: 0px;
 `
+const UploadLabel = styled.label`
+  width: ${props => props.areFilesUploaded ? "220px" : "460px" };
+  height: 232px;
+
+  background-color: none;
+  position: absolute;
+`
 
 function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, changeNotifiactionType}) {
+
+
+  const UploadSelectedFile = (file) =>{
+    if (!file) return;
+
+    if (file.type != "text/csv"){
+      changeNotifiactionType( (prev) => ({...prev, type: 2 }))
+    } else if(file.size > 524288000){
+      changeNotifiactionType((prev) => ({...prev, type: 3 }))
+    } else{
+      if (onDrop) {
+        onDrop(file);
+      }
+    }
+
+  }
+
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
@@ -81,9 +105,9 @@ function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, ch
       drop: (item) => {
         item.files.forEach((element) => {
           if (element.type != "text/csv"){
-            changeNotifiactionType(2)
+            changeNotifiactionType((prev) => ({...prev, type: 2 }))
           } else if(element.size > 524288000){
-            changeNotifiactionType(3)
+            changeNotifiactionType((prev) => ({...prev, type: 3 }))
           } else{
             if (onDrop) {
               onDrop(element);
@@ -113,19 +137,28 @@ function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, ch
       </div>
       <div style={{display:"flex", flexDirection:"row", justifyContent:" space-around", gap:"20px"}}>
         <Upload areFilesUploaded={recentlyUploadedFiles.length>0}>
-            <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
-              .csv files only.
-            </Text>
-            <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
-              Maximum file size 500 mb
-            </Text>
-            <Icon icon="carbon:cloud-upload" style={{ fontSize:"52px", color:"#00847A", padding:"42px" }}/>
-            <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
-              Drag and drop your files here or
-            </Text>
-            <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
-              click to browse
-            </Text>
+          <UploadLabel areFilesUploaded={recentlyUploadedFiles.length>0}>
+            <input
+              style={{display:"none"}}
+              type="file"
+              onChange={(event) => {
+                UploadSelectedFile(event.target.files[0]);
+              }}
+            />
+          </UploadLabel>
+          <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
+            .csv files only.
+          </Text>
+          <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
+            Maximum file size 500 mb
+          </Text>
+          <Icon icon="carbon:cloud-upload" style={{ fontSize:"52px", color:"#00847A", padding:"42px" }}/>
+          <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
+            Drag and drop your files here or
+          </Text>
+          <Text size="10px" height="14px" margin="0" align="center" color="#00847A">
+            click to browse
+          </Text>
         </Upload>
         {recentlyUploadedFiles.length>0 && (
           <RecentlyUploadedFilesContainer>

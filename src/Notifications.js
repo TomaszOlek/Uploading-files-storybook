@@ -72,7 +72,7 @@ function Notifications({notificationType, setNotificationType}) {
   // 2 - Error Notification | only .scv,   
   // 3 - Error Notification | size limit, 
   console.log(notificationType)
-  console.log(notificationType.type  === 1)
+  console.log(notificationType  === 1)
 
 
   const resumeUpload = (item) => {
@@ -82,7 +82,7 @@ function Notifications({notificationType, setNotificationType}) {
 
   const removeFile = (item) => {
     item.cancel()
-    // changeNotificationType(0)
+    changeNotificationType(0)
   }
 
 
