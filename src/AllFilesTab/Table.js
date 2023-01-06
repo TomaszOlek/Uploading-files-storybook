@@ -134,10 +134,10 @@ function Table({ render , reRender }) {
 
         <FileContainer>
           {
-            filesList>0 ? 
-            (<NoFilesAvailable/>) 
+            filesList.length === 0 ? 
+              <NoFilesAvailable/>
             : 
-            (<SortedFiles filesList={filesList} sortBy={sortBy} reRender={reRender}/>)
+              <SortedFiles filesList={filesList} sortBy={sortBy} reRender={reRender}/>
           }
         </FileContainer>
 
