@@ -27,7 +27,6 @@ const ContentContainer = styled.div`
 `
 const AllFilesScroll = styled.div`
   width: 1024px;
-  height: 100%;
 `
 const Upload = styled.div`
   width: 1020px;
@@ -106,15 +105,17 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNo
       <AllFilesScroll>
         <Text weight="600" size="24px" height="33px">Upload files</Text>
         <Upload ref={drop}>
-          <UploadLabel areFilesUploaded={recentlyUploadedFiles.length>0}>
-            <input
-              style={{display:"none"}}
-              type="file"
-              onChange={(event) => {
-                UploadSelectedFile(event.target.files[0]);
-              }}
-            />
-          </UploadLabel>
+          <div style={{position: "relative", top: "-13px", left:"-510px"}}>
+            <UploadLabel areFilesUploaded={recentlyUploadedFiles.length>0}>
+              <input
+                style={{display:"none"}}
+                type="file"
+                onChange={(event) => {
+                  UploadSelectedFile(event.target.files[0]);
+                }}
+              />
+            </UploadLabel>
+          </div>
           <Icon icon="carbon:cloud-upload" style={{ fontSize: "32px", color: "#00847A", padding: "30px 0 24px 0" }}/>
           <Text size="10px" height="14px" margin="0" align="center" color="#7C8088">
             Drag and drop your files here or <span style={{color:"#00847A"}}>click to browse</span>
@@ -126,7 +127,6 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNo
         {recentlyUploadedFiles.length>0 && (
           <DroppedFiles recentlyUploadedFiles={recentlyUploadedFiles} removeRecentFile={removeRecentFile} reRender={reRender}/>
         )}
-        <Text weight="600" size="24px" height="33px">All files</Text>
         <Table render={render} reRender={reRender}/> 
       </AllFilesScroll>
     </ContentContainer>

@@ -6,11 +6,19 @@ import FileItem from './FileItem'
 
 const FilesTableContainer = styled.div`
     width: 1024px;
+    /* height: 650px; */
     margin-top: 20px;
 
     display: flex;
     flex-direction: column;
+    justify-content: start;
     gap: 10px;
+
+    overflow: hidden;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `
 
 function Sort(sortBy,filesList){

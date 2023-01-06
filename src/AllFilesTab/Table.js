@@ -40,8 +40,12 @@ const SortFiles = styled.div`
 const FilesTable = styled.div`
   width: 1024px;
 
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 const FilesTableBar = styled.div`
   width: 1024px;
@@ -57,7 +61,7 @@ const FilesTableBar = styled.div`
 `
 const FileContainer = styled.div`
   width: 1024px;  
-  height: 272px;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -95,7 +99,14 @@ function Table({ render , reRender }) {
   }, [render])
 
   return (
-    <> 
+    <div style={{
+      maxHeight:"calc(100vh - 73px)", 
+      paddingBottom: "24px", 
+      boxSizing: "border-box",
+      display: "flex", 
+      flexSirection: "column"
+    }}> 
+      <Text weight="600" size="24px" height="33px">All files</Text>
       <TableSerchContainer>
         <Search>
           <div style={{position:"relative", height:"0", width:"0"}}>
@@ -142,7 +153,7 @@ function Table({ render , reRender }) {
         </FileContainer>
 
       </FilesTable>
-    </>
+    </div>
   );
 }
 

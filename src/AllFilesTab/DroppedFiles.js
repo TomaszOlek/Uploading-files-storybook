@@ -10,22 +10,26 @@ import { convertToMBorKB } from '../functions'
 
 const FilesContainer = styled.div`
   max-width: 100%;
-  max-height: 200px;
+  /* max-height: 168px; */
   padding: 16px 12px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   gap: 10px;
 
   border: 1px solid #CECECE;
   border-radius: 4px;
 
   overflow: hidden;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 const File = styled.div`
   width: 1000px;
-  height: 66px;
+  min-height: 66px;
 
   display: flex;
   flex-direction: row;
@@ -43,6 +47,18 @@ const FileInforamtions = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   gap: 20px;
+`
+const ProgressBar = styled(LinearProgress)`
+  &.MuiLinearProgress-root{
+    height: 8px;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+  }
+  &.MuiLinearProgress-root .MuiLinearProgress-bar{
+    height: 8px;
+    background-color: #489BFF;
+    border-radius: 10px;
+  }
 `
 
 function DroppedFiles({ recentlyUploadedFiles, removeRecentFile }) {
@@ -98,7 +114,7 @@ function DroppedFiles({ recentlyUploadedFiles, removeRecentFile }) {
                   </>)
                 }
               </FileInforamtions>
-              <LinearProgress variant="determinate" value={element.uploadProgress} />
+              <ProgressBar variant="determinate" value={element.uploadProgress} />
             </div>
             <Icon onClick={ () => removeRecentFile(element) } icon="fe:close" style={{ fontSize:"24px", color:"#77797E"}} ></Icon>
           </File>

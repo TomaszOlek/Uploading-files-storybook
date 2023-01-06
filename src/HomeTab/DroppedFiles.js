@@ -19,6 +19,19 @@ const DroppedFileContainer = styled.div`
   border-bottom: 1px solid #F0F0F0;
 `
 
+const ProgressBar = styled(LinearProgress)`
+  &.MuiLinearProgress-root{
+    height: 4px;
+    background-color: #D9D9D9;
+    border-radius: 6px;
+  }
+  &.MuiLinearProgress-root .MuiLinearProgress-bar{
+    height: 4px;
+    background-color: #489BFF;
+    border-radius: 6px;
+  }
+`
+
 function DroppedFiles({ element, removeRecentFile }) {
   return(
       <DroppedFileContainer>
@@ -48,7 +61,7 @@ function DroppedFiles({ element, removeRecentFile }) {
           <Icon icon="fe:close" onClick={ () =>  removeRecentFile(element)} style={{ fontSize:"12px", color:"#63676E", alignSelf:"center", marginLeft: "auto"}}/>
         </div>
 
-        <LinearProgress variant="determinate" value={element.uploadProgress} />
+        <ProgressBar variant="determinate" value={element.uploadProgress} />
 
         <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-start", height:"14px"}}>
           {
