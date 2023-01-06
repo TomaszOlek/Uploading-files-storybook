@@ -22,7 +22,7 @@ const DroppedFileContainer = styled.div`
 function DroppedFiles({ element, removeRecentFile }) {
   return(
       <DroppedFileContainer>
-      <img src={excel_icon} style={{width:"24px", height:"24px", alignSelf: "center", marginRight:"10px"}}/>
+      <img src={excel_icon} alt="excel icon" style={{width:"24px", height:"24px", alignSelf: "center", marginRight:"10px"}}/>
       <div 
         style={{
           display:"flex",

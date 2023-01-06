@@ -63,7 +63,7 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNo
   const UploadSelectedFile = (file) =>{
     if (!file) return;
 
-    if (file.type != "text/csv"){
+    if (file.type !== "text/csv"){
       changeNotifiactionType( (prev) => ({...prev, type: 2 }))
     } else if(file.size > 524288000){
       changeNotifiactionType((prev) => ({...prev, type: 3 }))
@@ -73,7 +73,6 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNo
       }
     }
   }
-
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
@@ -81,7 +80,7 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNo
 
       drop: (item) => {
         item.files.forEach((element) => {
-          if (element.type != "text/csv"){
+          if (element.type !== "text/csv"){
             changeNotifiactionType((prev) => ({...prev, type: 2 }))
           } else if(element.size > 524288000){
             changeNotifiactionType((prev) => ({...prev, type: 3 }))

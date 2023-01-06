@@ -29,7 +29,7 @@ function SortedFiles({ filesList, sortBy, reRender }) {
 
     useEffect(() => {
         setSorteList(Sort(sortBy,filesList))
-    }, [filesList])
+    }, [filesList,sortBy])
 
     return (
         <FilesTableContainer>

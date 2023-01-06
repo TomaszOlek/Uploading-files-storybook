@@ -10,7 +10,6 @@ import { Text } from '../functions'
 import DropDownMenu from './DropDownMenu'
 import NoFilesAvailable from './NoFilesAvailable'
 import SortedFiles from './SortedFiles'
-import { width } from '@mui/system';
 
 const Search = styled.div`
   width: 100%;
@@ -90,7 +89,6 @@ function Table({ render , reRender }) {
       res.items.forEach((item)=>{
         getMetadata(item).then((metadata) => {
           setFilesList((prev) => [...prev, metadata])
-          console.log("rerender")
         })
       })
     })

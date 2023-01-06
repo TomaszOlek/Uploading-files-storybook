@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {  DndProvider } from 'react-dnd';
@@ -12,8 +12,6 @@ import NavBar from "./NavBar"
 import HomeTab from "./HomeTab/HomeTab"
 import AllFilesTab from "./AllFilesTab/AllFilesTab"
 import Notifications from "./Notifications"
-import { positions } from '@mui/system';
-import { element } from 'prop-types';
 
 
 const Content = styled.div`
@@ -155,7 +153,6 @@ function App() {
   },[downloadData])
 
   const removeRecentFile = (item) => {
-    console.log(item)
     if (item.uploadProgress === 100) {
       const newArray = recentlyUploadedFiles.filter( element => element.name !== item.name)
       if (newArray.length>1){
@@ -226,7 +223,7 @@ function App() {
             <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile} changeNotifiactionType={changeNotifiactionType}/>
           )}
         </Content>
-        {notificationType.type != 0 && (
+        {notificationType.type !== 0 && (
           <Notifications notificationType={notificationType} setNotificationType={setNotificationType}/>
         )}
       </div>

@@ -71,9 +71,6 @@ function Notifications({notificationType, setNotificationType}) {
   // 1 - Warning Notification, 
   // 2 - Error Notification | only .scv,   
   // 3 - Error Notification | size limit, 
-  console.log(notificationType)
-  console.log(notificationType  === 1)
-
 
   const resumeUpload = (item) => {
     item.resume()

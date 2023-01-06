@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useDrop } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
@@ -84,7 +84,7 @@ function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, ch
   const UploadSelectedFile = (file) =>{
     if (!file) return;
 
-    if (file.type != "text/csv"){
+    if (file.type !== "text/csv"){
       changeNotifiactionType( (prev) => ({...prev, type: 2 }))
     } else if(file.size > 524288000){
       changeNotifiactionType((prev) => ({...prev, type: 3 }))
@@ -96,7 +96,6 @@ function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, ch
 
   }
 
-
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
@@ -104,7 +103,7 @@ function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, ch
 
       drop: (item) => {
         item.files.forEach((element) => {
-          if (element.type != "text/csv"){
+          if (element.type !== "text/csv"){
             changeNotifiactionType((prev) => ({...prev, type: 2 }))
           } else if(element.size > 524288000){
             changeNotifiactionType((prev) => ({...prev, type: 3 }))

@@ -71,7 +71,7 @@ function HomeTab({recentlyUploadedFiles, handleFileDrop, removeRecentFile, chang
           </Text>
           <Button>Learn more</Button>
         </DataCloudText>
-        <img src={cloud_banner} style={{ marginRight: "88px", alignSelf: "center" }}/>
+        <img src={cloud_banner} alt="cloud banner" style={{ marginRight: "88px", alignSelf: "center" }}/>
       </HomeDataCloudContainer>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap:"24px" }}>
         <ConnectData/>

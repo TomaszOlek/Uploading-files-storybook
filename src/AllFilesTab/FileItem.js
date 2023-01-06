@@ -41,8 +41,6 @@ const FilesItemIcons = styled.div`
 
 function FileItem({ timeCreated, fileName, fileSize, fileInfo, reRender }) {
 
-  console.log(fileInfo)
-
   const onRemoveFile = (props) => {
     const desertRef = ref(storage, props.fullPath);
 
@@ -75,7 +73,7 @@ function FileItem({ timeCreated, fileName, fileSize, fileInfo, reRender }) {
 
   return(
     <FilesItemContainer>
-      <img src={excel_icon} style={{height:"24px", width: "24px", marginLeft: "16px", marginRight: "8px"}}/>
+      <img src={excel_icon} alt="excel icon" style={{height:"24px", width: "24px", marginLeft: "16px", marginRight: "8px"}}/>
       <Text 
         weight="600" 
         size="12px" 

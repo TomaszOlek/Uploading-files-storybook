@@ -48,7 +48,7 @@ function ConnectData() {
           Connecting your data sources to activate this data in apps
         </Text>
       </div>
-      <img src={connect_data_cources} style={{width: "339px", height: "147pxs", alignSelf:"center"}}/>
+      <img src={connect_data_cources} alt="connect data cources" style={{width: "339px", height: "147pxs", alignSelf:"center"}}/>
       <FilldButton style={{marginBottom: "24px", alignSelf: "center"}}>Connect</FilldButton>
     </ConnectDataContainer>
   );

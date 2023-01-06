@@ -51,7 +51,7 @@ function DroppedFiles({ recentlyUploadedFiles, removeRecentFile }) {
       {
         recentlyUploadedFiles.map((element,index)=>(
           <File key={index}>
-            <img src={excel_icon} style={{ width: '24px', height: '24px' }} />
+            <img src={excel_icon} alt="excel icon" style={{ width: '24px', height: '24px' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <FileInforamtions>
                 <Text weight="600" size="12px" height="16px" align="center" margin="0">
