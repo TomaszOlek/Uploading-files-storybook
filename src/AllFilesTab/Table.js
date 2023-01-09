@@ -82,6 +82,9 @@ function Table({ render , reRender }) {
   const [filesList, setFilesList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+
   const changeSortSelection = sortTo => {
     setSortBy(sortTo)
   }
@@ -101,6 +104,23 @@ function Table({ render , reRender }) {
     setIsLoading(false)
   }, [render])
 
+  useEffect(()=>{
+    if (searchInput !== "") {
+      const filteredData = filesList.filter((element) => {
+          return element.name.split(".")[0].toLowerCase().includes(searchInput.toLowerCase())
+      })
+      setFilteredResults(filteredData)
+    }
+    else{
+        setFilteredResults(filesList)
+    }
+  }, [filesList,searchInput])
+
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue)
+  }
+
   return (
     <div style={{
       maxHeight:"calc(100vh - 73px)", 
@@ -116,10 +136,16 @@ function Table({ render , reRender }) {
             <Icon icon="fe:search" style={{ left: "16px", top: "-7px", position: "absolute", color: "#63676E" }}/>
           </div>
           <SearchBar 
+            onChange={(e) => searchItems(e.target.value)}
+            value={searchInput}
             type="text"
             placeholder="Search">
           </SearchBar>
-          <Icon icon="fe:close" style={{position: "relative", right: "25px", color: "#63676E" }}/>
+          {
+            searchInput.length > 0
+            && 
+            <Icon onClick={ () => setSearchInput("") } icon="fe:close" style={{position: "relative", right: "25px", color: "#63676E" }}/>
+          }
         </Search>
         <SortFiles>
           <Icon icon="bx:sort" style={{color: "#001833", alignSelf: "center", paddingRight: "4px" }}/>
@@ -151,7 +177,7 @@ function Table({ render , reRender }) {
             filesList.length === 0 && !isLoading ? 
               <NoFilesAvailable/>
             : 
-              <SortedFiles filesList={filesList} sortBy={sortBy} reRender={reRender}/>
+              <SortedFiles filesList={filteredResults} sortBy={sortBy} reRender={reRender}/>
           }
         </FileContainer>
 

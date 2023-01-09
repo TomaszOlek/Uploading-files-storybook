@@ -36,9 +36,6 @@ function SortedFiles({ filesList, sortBy, reRender }) {
     const [sortedList, setSortedList] = useState([])
     const [isReady, setIsReady] = useState(false)
 
-    console.log("filesList",filesList)
-    console.log("sortedList",sortedList)
-
     useEffect(() => {
         setIsReady(false)
     },[sortBy, filesList])
