@@ -52,12 +52,7 @@ const UploadLabel = styled.label`
 `
 
 //ToAdd - Error Notification
-function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNotifiactionType }) {
-  const [render, setRender] = useState(true);
-
-  const reRender = () => {
-    setRender(prev => !prev)
-  }
+function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNotifiactionType, reRender, render }) {
 
   const UploadSelectedFile = (file) =>{
     if (!file) return;

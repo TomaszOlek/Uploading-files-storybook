@@ -102,6 +102,7 @@ function App() {
   const [activeTab,setActiveTab] = useState("Home")
   const [recentlyUploadedFiles, setRecentlyUploadedFiles] = useState([]);
   const [downloadData, setDownloadData] = useState();
+  const [render, setRender] = useState(true);
 
   const [notificationType, setNotificationType] = useState({type: 0, element : {}});
   
@@ -117,6 +118,10 @@ function App() {
 
   const changeNotifiactionType = type =>{
     setNotificationType(type)
+  }
+
+  const reRender = () => {
+    setRender(prev => !prev)
   }
 
   useEffect(()=>{
@@ -166,9 +171,9 @@ function App() {
     }
   }
 
+
   const handleFileDrop = (item) => {
     if(item){
-
       const randomizedName = `${item.name + v4()}`
       const fileRef = ref(storage, `files/${randomizedName}`)
       const uploading = uploadBytesResumable(fileRef, item)
@@ -177,6 +182,9 @@ function App() {
       (snapshot) => {
         // console.log(snapshot)
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        if (progress === 100){
+          reRender()
+        }
         switch (snapshot.state) {
           case 'paused':
             setDownloadData({
@@ -220,7 +228,7 @@ function App() {
             <ContentContainer>Empty</ContentContainer>
           )}
           {activeTab === "AllFiles" &&(
-            <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile} changeNotifiactionType={changeNotifiactionType}/>
+            <AllFilesTab recentlyUploadedFiles={recentlyUploadedFiles} onDrop={handleFileDrop} removeRecentFile={removeRecentFile} changeNotifiactionType={changeNotifiactionType} reRender={reRender} render={render}/>
           )}
         </Content>
         {notificationType.type !== 0 && (
