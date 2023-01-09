@@ -33,23 +33,41 @@ function Sort(sortBy,filesList){
 
 function SortedFiles({ filesList, sortBy, reRender }) {
 
-    const [sorteList, setSorteList] = useState([])
+    const [sortedList, setSortedList] = useState([])
+    const [isReady, setIsReady] = useState(false)
+
+    console.log("filesList",filesList)
+    console.log("sortedList",sortedList)
 
     useEffect(() => {
-        setSorteList(Sort(sortBy,filesList))
-    }, [filesList,sortBy])
+        setIsReady(false)
+    },[sortBy, filesList])
+
+    useEffect(() => {
+        if (!isReady) getResult();
+    
+       function getResult() {
+            setSortedList(Sort(sortBy, filesList))
+            setIsReady(true);
+        }
+    }, [isReady]);
+
 
     return (
-        <FilesTableContainer>
-            {sorteList.map((fileInfo, index)=>(
-                <FileItem key={fileInfo.name}
-                    timeCreated={fileInfo.timeCreated.split('T')[0]} 
-                    fileName={fileInfo.name.split('.csv')[0]}
-                    fileSize={fileInfo.size}
-                    fileInfo={fileInfo}
-                    reRender={reRender}
-                />
-            ))}
+        <FilesTableContainer>  
+            { isReady ? 
+                filesList.map((fileInfo, index)=>(
+                    <FileItem key={fileInfo.name}
+                        timeCreated={fileInfo.timeCreated.split('T')[0]} 
+                        fileName={fileInfo.name.split('.csv')[0]}
+                        fileSize={fileInfo.size}
+                        fileInfo={fileInfo}
+                        reRender={reRender}
+                    />
+                ))
+                :
+                <></> 
+            }
         </FilesTableContainer>
     );
 }

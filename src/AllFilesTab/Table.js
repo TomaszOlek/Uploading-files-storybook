@@ -80,6 +80,7 @@ const TableSerchContainer = styled.div`
 function Table({ render , reRender }) {
   const [sortBy, setSortBy] = useState("recent");
   const [filesList, setFilesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const changeSortSelection = sortTo => {
     setSortBy(sortTo)
@@ -88,6 +89,7 @@ function Table({ render , reRender }) {
   const filesListRef = ref(storage, "files/")
 
   useEffect(()=>{
+    setIsLoading(true)
     setFilesList([])
     listAll(filesListRef).then((res)=>{
       res.items.forEach((item)=>{
@@ -96,6 +98,7 @@ function Table({ render , reRender }) {
         })
       })
     })
+    setIsLoading(false)
   }, [render])
 
   return (
@@ -104,7 +107,7 @@ function Table({ render , reRender }) {
       paddingBottom: "24px", 
       boxSizing: "border-box",
       display: "flex", 
-      flexSirection: "column"
+      flexDirection: "column", 
     }}> 
       <Text weight="600" size="24px" height="33px">All files</Text>
       <TableSerchContainer>
@@ -145,7 +148,7 @@ function Table({ render , reRender }) {
 
         <FileContainer>
           {
-            filesList.length === 0 ? 
+            filesList.length === 0 && !isLoading ? 
               <NoFilesAvailable/>
             : 
               <SortedFiles filesList={filesList} sortBy={sortBy} reRender={reRender}/>
