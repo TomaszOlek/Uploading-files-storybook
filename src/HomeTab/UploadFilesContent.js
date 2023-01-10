@@ -95,7 +95,7 @@ function UploadFilesContent({onDrop, recentlyUploadedFiles, removeRecentFile, ch
     }
 
   }
-
+  // eslint-disable-next-line no-unused-vars
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],

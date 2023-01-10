@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 
 import FileItem from './FileItem'
@@ -43,17 +43,19 @@ function SortedFiles({ filesList, sortBy, reRender }) {
     useEffect(() => {
         if (!isReady) getResult();
     
-       function getResult() {
+        function getResult() {
             setSortedList(Sort(sortBy, filesList))
             setIsReady(true);
         }
     }, [isReady]);
 
+    const memoizedFilesList = useMemo(() => sortedList, [sortedList]);
+
 
     return (
         <FilesTableContainer>  
             { isReady ? 
-                filesList.map((fileInfo, index)=>(
+                memoizedFilesList.map((fileInfo) => (
                     <FileItem key={fileInfo.name}
                         timeCreated={fileInfo.timeCreated.split('T')[0]} 
                         fileName={fileInfo.name.split('.csv')[0]}

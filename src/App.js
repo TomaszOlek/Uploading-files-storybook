@@ -155,6 +155,7 @@ function App() {
         setRecentlyUploadedFiles(newArr)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[downloadData])
 
   const removeRecentFile = (item) => {

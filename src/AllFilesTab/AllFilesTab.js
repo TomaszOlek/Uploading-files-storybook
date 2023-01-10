@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 
@@ -67,6 +67,7 @@ function AllFilesTab({ recentlyUploadedFiles, onDrop, removeRecentFile, changeNo
       }
     }
   }
+  // eslint-disable-next-line no-unused-vars
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],

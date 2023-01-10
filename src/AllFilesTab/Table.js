@@ -89,20 +89,28 @@ function Table({ render , reRender }) {
     setSortBy(sortTo)
   }
 
-  const filesListRef = ref(storage, "files/")
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue)
+  }
 
-  useEffect(()=>{
-    setIsLoading(true)
-    setFilesList([])
-    listAll(filesListRef).then((res)=>{
-      res.items.forEach((item)=>{
-        getMetadata(item).then((metadata) => {
-          setFilesList((prev) => [...prev, metadata])
-        })
-      })
-    })
-    setIsLoading(false)
-  }, [render])
+  useEffect(() => {
+    const filesListRef = ref(storage, "files/");
+    setIsLoading(true);
+    setFilesList([]);
+    const fetchData = async () => {
+      try {
+        const res = await listAll(filesListRef);
+        for (let item of res.items) {
+          const metadata = await getMetadata(item);
+          setFilesList((prev) => [...prev, metadata]);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [render]);
 
   useEffect(()=>{
     if (searchInput !== "") {
@@ -115,11 +123,6 @@ function Table({ render , reRender }) {
         setFilteredResults(filesList)
     }
   }, [filesList,searchInput])
-
-
-  const searchItems = (searchValue) => {
-    setSearchInput(searchValue)
-  }
 
   return (
     <div style={{
@@ -174,10 +177,23 @@ function Table({ render , reRender }) {
 
         <FileContainer>
           {
-            filesList.length === 0 && !isLoading ? 
-              <NoFilesAvailable/>
-            : 
-              <SortedFiles filesList={filteredResults} sortBy={sortBy} reRender={reRender}/>
+            (()=>{
+              if(isLoading) return <div 
+              style={{
+                width:"162px", 
+                height: "104px",
+                marginTop: "80px", 
+                display: "flex", 
+                justifyContent: "center",
+                alignItems: "center"
+              }}> Loading . . . </div>
+
+              if (filesList.length === 0){
+                return <NoFilesAvailable/>
+              } else {
+                return <SortedFiles filesList={filteredResults} sortBy={sortBy} reRender={reRender}/>
+              }
+            })()
           }
         </FileContainer>
 
